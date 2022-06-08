@@ -1,0 +1,100 @@
+---
+title: "Axios-Harris Poll"
+output: html_document
+date: '2022-05-31'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(showtext)
+library(sys)
+```
+
+```{r}
+poll <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-05-31/poll.csv')
+reputation <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-05-31/reputation.csv')
+```
+
+
+```{r}
+font_add_google("Dosis", family = "Dosis")
+showtext_auto()
+```
+
+
+```{r}
+# Industries with the most visibility
+
+poll %>%
+  group_by(industry) %>%
+  count() %>%
+  arrange(desc(n))
+```
+
+
+```{r}
+poll %>%
+  filter(industry == "Food & Beverage") %>%
+  group_by(company, `2022_rank`) %>%
+  summarize(count = n()) %>%
+  arrange(`2022_rank`)
+```
+
+
+# Preparing the data
+```{r}
+food_data <- reputation %>%
+  filter(industry == "Food & Beverage") %>%
+  select(-c(rank, industry)) %>%
+  
+  group_by(company) %>%
+  mutate(AVERAGE = round(mean(score), digits = 1)) %>%
+  ungroup() %>%
+  
+  # transforms 'name' into columns, 'score' into observations
+  pivot_wider(names_from = name, values_from = score) %>%
+  
+  # reorders company column in order of average score
+  mutate(company = fct_reorder(company, AVERAGE)) %>%
+  
+  # orders rows in descending order of average value of company
+  pivot_longer(cols = -company) %>%
+  # adds column to represent remainder value (will be the lighter color in graph)
+  mutate(remainder_value = 100 - value) %>%
+  pivot_longer(cols = c(value, remainder_value), names_to = "score_type", values_to = "score") %>%
+  mutate(score_type = factor(score_type, levels = c("remainder_value", "value")))
+```
+
+
+# Graphing the data
+```{r}
+plot <- food_data %>%
+  ggplot() +
+  geom_col(aes(x = score, y = company, fill = score_type)) +
+  facet_wrap(~name, nrow = 2, ncol = 4) +
+  labs(x = "", y = "", title = "2022 Axios-Harris Poll: Food & Beverage Companies",
+       caption = "Kyle Torres | Data: Axios and Harris Poll") +
+   scale_fill_manual(values = c("remainder_value" = "darkseagreen3", "value" = "darkseagreen4")) +
+  theme(plot.title = element_text(colour = "darkseagreen4", face = "bold", 
+                                  size = 24, family = "Dosis", 
+                                  margin = margin(b = 10)),
+        axis.text = element_text(colour = "darkseagreen4", family = "Dosis", 
+                                 size = 10, lineheight = 0.4),
+        strip.text = element_text(colour = "darkseagreen4", family = "Dosis", 
+                                  size = 12, lineheight = 0.4),
+        plot.caption = element_text(colour = "darkseagreen4", family = "Dosis", 
+                                  size = 10, lineheight = 0.4),
+        strip.background = element_rect(fill = "#b2d8d8", colour = "#b2d8d8"),
+        legend.position = "none",
+        panel.background = element_rect(fill = "#b2d8d8", colour = "#b2d8d8"),
+        plot.background = element_rect(fill = "#b2d8d8", colour = "#b2d8d8"), 
+        axis.ticks = element_blank(),
+        panel.grid = element_blank(),
+        plot.margin = unit(c(1, 1.2, 0.5, 0.5), "cm"))
+
+plot
+
+ggsave(plot = plot, file = "Axios-Harris Poll.jpeg", width = 10)
+```
+

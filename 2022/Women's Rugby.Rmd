@@ -1,0 +1,62 @@
+---
+title: "TidyTuesday - Women's Rugby"
+output: html_document
+date: '2022-05-24'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+
+rm(list = ls())
+```
+
+```{r}
+sevens <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-05-24/sevens.csv')
+
+fifteens <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-05-24/fifteens.csv')
+```
+
+
+```{r}
+sevens <- sevens %>%
+  mutate(finals_victory = case_when(stage == "Final" ~ "yes", TRUE ~ "no"))
+```
+
+
+```{r}
+sevens_total_final <- sevens %>%
+  select(winner, finals_victory) %>%
+  group_by(winner, finals_victory) %>%
+  summarize(final_wins = n()) %>%
+  pivot_wider(names_from = finals_victory, values_from = final_wins)  # UNDERSTAND
+
+sevens_total_final[is.na(sevens_total_final)] = 0
+
+sevens_total_final <- sevens_total_final %>% 
+  pivot_longer(names_to = "Finals", values_to = "Count", -winner) %>%
+  
+  filter(winner == "Australia"| winner == "France"| winner == "New Zealand"| winner == "Canada"| winner == "England")
+
+sevens_total_final %>%
+  ggplot(aes(x = reorder(winner, -Count), y = Count, fill = Finals)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Countries", y = "Total wins", title = "Top Countries in Total Wins")
+```
+
+
+```{r}
+sevens_top_wins <- sevens %>%
+  filter(stage == "Final") %>%
+  group_by(winner) %>%
+  summarize(final_wins = n()) %>%
+  arrange(desc(final_wins)) %>%
+  slice(1:5)
+
+sevens_top_wins%>%
+ ggplot(aes(x = reorder(winner, -final_wins), y = final_wins)) +
+  geom_bar(stat = "identity") + 
+  labs(x = "Countries", y = "Final wins", title = "Top Countries in Final Wins")
+```
+

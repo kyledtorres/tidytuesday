@@ -1,0 +1,78 @@
+---
+title: "TidyTuesday - Eurovision"
+output: html_document
+date: '2022-05-17'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggchicklet)
+```
+
+```{r}
+eurovision <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-05-17/eurovision.csv')
+```
+
+
+```{r}
+eurovision_three_countries <- eurovision %>%
+  filter(artist_country == "Ukraine"|artist_country == "Sweden"|artist_country == "Finland")
+```
+
+
+```{r}
+eurovision_three_countries %>%
+  ggplot(aes(x = artist_country, y = total_points, fill = "section")) +
+  geom_dotplot(binaxis = "y", stackdir = "center", dotsize = 0.5) +
+  coord_flip()
+```
+
+
+```{r}
+eurovision_three_countries %>%
+  ggplot(aes(x = artist_country, y = total_points, fill = section)) +
+  geom_bar(stat = "identity") +
+  
+  # need to inlcude stat = "identity" if I want to add a 2nd variable (otherwise
+  # R defaults to count as y variable)
+  
+  coord_flip()    # flips bar plot (to make it horizontal instead of vertical)
+```
+
+
+```{r}
+eurovision_three_countries %>%
+  ggplot(aes(artist_country, total_points, fill = section)) +
+  geom_chicklet(radius = grid::unit(5, "pt"), colour = NA) +
+  
+  # geom_chicklet creates rounded rectangle column charts
+  
+  coord_flip()
+```
+
+# How do I get plot to be in descending order of total points?
+```{r}
+eurovision %>%
+ggplot(aes(x = artist_country, y = total_points, fill = section)) +
+  geom_bar(stat = "identity") +
+  coord_flip() 
+```
+
+```{r}
+eurovision_sum <- eurovision %>%
+  group_by(artist_country) %>%
+  summarize(total = sum(total_points, na.rm = TRUE)) %>%
+  arrange(desc(total))
+```
+
+```{r}
+eurovision %>%
+group_by(artist_country) %>%
+  mutate(total = sum(total_points)) %>%
+  ungroup() 
+  mutate(
+    artist_country = fct_reorder(artist_country, total, min),
+    section = factor(section, levels = c("semi-final","first-semi-final", "second-semi-final", "grand-final", "final"))
+    )
+```

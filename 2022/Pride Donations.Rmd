@@ -1,0 +1,82 @@
+---
+title: "Pride Donations"
+output: html_document
+date: '2022-06-07'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(showtext)
+library(sys)
+```
+
+```{r}
+pride_aggregates <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-06-07/pride_aggregates.csv')
+fortune_aggregates <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-06-07/fortune_aggregates.csv')
+static_list <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-06-07/static_list.csv')
+pride_sponsors <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-06-07/pride_sponsors.csv')
+corp_by_politicians <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-06-07/corp_by_politician.csv')
+donors <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-06-07/donors.csv')
+```
+
+
+```{r}
+corp_by_politicians %>%
+  group_by(State) %>%
+  summarize(count = n())
+```
+
+# Sort by amount given
+```{r}
+# Total_ordered <- c("0-70,000", "70,000-90,000", "70,000-90,000", "70,000-90,000", "90,000-100,000", "100,000-150,000", "100,000-150,000", "100,000-150,000", "100,000-150,000") 
+
+# slice(match(Total_ordered, Total))
+
+fortune_top_ten <- fortune_aggregates %>%
+  slice(1:10) %>%
+  mutate(Total = case_when(`Total Contributed` < 100000 ~ "0-100,000", `Total Contributed` < 150000 ~ "100,000-150,000", `Total Contributed` < 200000 ~ "150,000-200,000", TRUE ~ "200,000 +")) %>%
+  select(Company, `Total Contributed`, Total)
+```
+
+
+```{r}
+plot <- fortune_top_ten %>%
+  ggplot() +
+  geom_col(aes(x = Company, y = `Total Contributed`, fill = Total), position = "dodge") +
+  # scale_fill_manual(values = c("#FF0000", "#FFF700", "#00C52A", "#156AFF", "#BF20FF", "#FF7C00")) +
+  scale_fill_manual(values = c("#BEF6C5", "#99C79E", "#6C8D70", "#435A46")) +
+  scale_y_log10() +
+  coord_polar() +
+  labs(x = "", y = "", title = "Pride Donations",
+       caption = "Kyle Torres | Data for Progress")
+
+plot
+ggsave(plot = plot, file = "Pride Donations by Total Contributed.jpeg", width = 10)
+```
+
+
+# Sort by number of politicians contributed to 
+```{r}
+fortune_num_of_politicians <- fortune_aggregates %>%
+  slice(1:10) %>%
+  select(Company, `Total Contributed`, `# of Politicians Contributed to`) %>%
+  arrange(-`# of Politicians Contributed to`) %>%
+  mutate(`Politicians supported` = case_when(`# of Politicians Contributed to` < 10 ~ "0-10", `# of Politicians Contributed to` < 20 ~ "10-20", `# of Politicians Contributed to` < 30 ~ "20-30", `# of Politicians Contributed to` < 40 ~ "30-40", `# of Politicians Contributed to` < 50 ~ "40-50", TRUE ~ "50 +")) %>%
+  select(Company, `Total Contributed`, `# of Politicians Contributed to`, `Politicians supported`)
+```
+
+
+# Length depends on amount given, color depends on # of politicians contributed to
+```{r}
+plot2 <- fortune_num_of_politicians %>%
+  ggplot() +
+  geom_col(aes(x = Company, y = `Total Contributed`, fill = `Politicians supported`), position = "dodge") +
+  scale_fill_manual(values = c("#FF0000", "#FFF700", "#00C52A", "#156AFF", "#BF20FF", "#FF7C00")) + # scale_y_log10() +
+  coord_polar() +
+  labs(x = "", y = "", title = "Pride Donations",
+       caption = "Kyle Torres | Data for Progress")
+  
+plot2
+```
