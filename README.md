@@ -3,6 +3,12 @@ This repository includes my plots as well as code for the weekly #tidytuesday ch
 
 ***
 
+### [Drought Conditions (6/14/22)](https://github.com/kyledtorres/tidytuesday/blob/main/2022/plots/Drought%20Conditions.jpeg)
+
+![2022/plots/drought_conditions.jpeg](https://github.com/kyledtorres/tidytuesday/blob/main/2022/plots/Drought%20Conditions.jpeg)
+
+***
+
 ### [Pride Donations (6/7/22)](https://github.com/kyledtorres/tidytuesday/blob/main/2022/plots/Pride%20Donations%20by%20Total%20Contributed.jpeg)
 
 ![2022/plots/pride donations.jpeg](https://github.com/kyledtorres/tidytuesday/blob/main/2022/plots/Pride%20Donations%20by%20Total%20Contributed.jpeg)
