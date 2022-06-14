@@ -1,0 +1,75 @@
+---
+title: "Drought Conditions in the US"
+output: html_document
+date: '2022-06-14'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(showtext)
+library(sys)
+require(maps)
+require(viridis)
+library(lubridate)
+```
+
+```{r}
+drought <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-06-14/drought.csv')
+drought_fips <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-06-14/drought-fips.csv')
+```
+
+
+```{r}
+# add fonts from Google
+font_add_google("Domine", family = "Domine")
+showtext_auto()
+```
+
+```{r}
+# separate data into decades
+drought_by_decade <- drought_fips %>%
+  mutate(decade = 10 * (year(date) %/% 10))
+```
+
+
+```{r}
+# find average DSCI for each state in each decade
+dsci_averages <- drought_by_decade %>%
+  group_by(State, decade) %>%
+  summarize(avg_DSCI = mean(DSCI)) %>%
+  ungroup() %>%
+  # joins two datasets together (state.abb & state.name are datasets) to change column "State" to be state abbreviations and to add a column called "region" that includes full state names
+  inner_join(tibble(State = state.abb, region = state.name), by = "State") %>%
+  # merges current datasest with map_data dataset (to eventually plot US map)
+  inner_join(map_data("state") %>% tibble() %>% mutate(region = str_to_title(region)), by = "region")
+```
+
+```{r}
+plot <- dsci_averages %>%
+ggplot(aes(x = long, y = lat, group = group, fill = avg_DSCI)) +
+  geom_polygon() +
+  facet_wrap(~decade) +
+  coord_map() +
+  scale_fill_gradient2(
+    high = "#DA390D",
+    low = "#FAE352",
+    mid = "#F89918",
+    midpoint = 160) +
+  labs(x = "", y = "", title = "Drought Conditions in the US", subtitle = "Average Drought Score (DSCI) by Decade", caption = "Kyle Torres | Data: National Integrated Drought Information System") +
+  theme(plot.title = element_text(colour = "black", face = "bold", 
+                                  size = 24, family = "Domine", 
+                                  margin = margin(b = 10)),
+        axis.text = element_text(colour = "black", family = "Domine", 
+                                 size = 10, lineheight = 0.4),
+        strip.text = element_text(colour = "black", family = "Domine", 
+                                  size = 12, lineheight = 0.4),
+        plot.caption = element_text(colour = "black", family = "Domine", 
+                                  size = 10, lineheight = 0.4))
+
+plot
+
+ggsave(plot = plot, file = "Drought Conditions.jpeg", height = 5, width = 8)
+```
+
