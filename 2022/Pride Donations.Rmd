@@ -49,11 +49,28 @@ plot <- fortune_top_ten %>%
   scale_fill_manual(values = c("#BEF6C5", "#99C79E", "#6C8D70", "#435A46")) +
   scale_y_log10() +
   coord_polar() +
-  labs(x = "", y = "", title = "Pride Donations",
-       caption = "Kyle Torres | Data for Progress")
+  labs(x = "", y = "", title = "PRIDE Donations", subtitle = "Fortune 500 companies with the largest donations to anti-LGBTQ politicians", caption = "Kyle Torres | Data for Progress") +
+   theme(plot.title = element_text(colour = "#144B13", face = "bold", 
+                                  size = 24, family = "Dosis", 
+                                  margin = margin(b = 10)),
+         plot.subtitle = element_text(colour = "#144B13", family = "Dosis"),
+        axis.text = element_text(colour = "#144B13", family = "Dosis", 
+                                 size = 5, lineheight = 0.4),
+        strip.text = element_text(colour = "#144B13", family = "Dosis", 
+                                  size = 12, lineheight = 0.4),
+        plot.caption = element_text(colour = "#144B13", family = "Dosis", 
+                                   size = 10, lineheight = 0.4),
+        legend.title = element_text(colour = "#144B13", family = "Dosis"),
+        legend.text = element_text(colour = "#144B13", family = "Dosis"),
+        panel.background = element_rect(fill = "#E0FAF5", colour = "#E0FAF5"),
+        plot.background = element_rect(fill = "#E0FAF5", colour = "#E0FAF5"), 
+        legend.background = element_rect(fill = "#E0FAF5", colour = "#E0FAF5"),)
+        # axis.ticks = element_blank(),
+        # panel.grid = element_blank())
 
 plot
-ggsave(plot = plot, file = "Pride Donations by Total Contributed.jpeg", width = 10)
+
+ggsave(plot = plot, file = "Pride Donations.jpeg")
 ```
 
 
