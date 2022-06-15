@@ -66,10 +66,13 @@ ggplot(aes(x = long, y = lat, group = group, fill = avg_DSCI)) +
         strip.text = element_text(colour = "black", family = "Domine", 
                                   size = 12, lineheight = 0.4),
         plot.caption = element_text(colour = "black", family = "Domine", 
-                                  size = 10, lineheight = 0.4))
+                                  size = 10, lineheight = 0.4),
+        panel.background = element_rect(fill = "#FAEDD1", colour = "#FAEDD1"),
+        plot.background = element_rect(fill = "#FAEDD1", colour = "#FAEDD1"), 
+        legend.background = element_rect(fill = "#FAEDD1", colour = "#FAEDD1"))
 
 plot
 
-ggsave(plot = plot, file = "Drought Conditions.jpeg", height = 5, width = 8)
+ggsave(plot = plot, file = "Drought Conditions in the US.jpeg", height = 5, width = 8)
 ```
 
