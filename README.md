@@ -3,9 +3,9 @@ This repository includes my plots as well as code for the weekly #tidytuesday ch
 
 ***
 
-### [Drought Conditions (6/14/22)](https://github.com/kyledtorres/tidytuesday/blob/main/2022/plots/Drought%20Conditions.jpeg)
+### [Drought Conditions (6/14/22)](https://github.com/kyledtorres/tidytuesday/blob/main/2022/plots/Drought%20Conditions%20in%20the%20US.jpeg)
 
-![2022/plots/drought_conditions.jpeg](https://github.com/kyledtorres/tidytuesday/blob/main/2022/plots/Drought%20Conditions.jpeg)
+![2022/plots/drought_conditions.jpeg](https://github.com/kyledtorres/tidytuesday/blob/main/2022/plots/Drought%20Conditions%20in%20the%20US.jpeg)
 
 ***
 
