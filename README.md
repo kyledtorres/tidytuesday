@@ -3,7 +3,13 @@ This repository includes my plots as well as code for the weekly #tidytuesday ch
 
 ***
 
-### [Egg Production (7/11/23)](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/eggs.jpeg)
+### [Egg Production (5/16/23)](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/Tornado%20Injuries.jpeg)
+
+![2023/plots/Tornado Injuries.jpeg](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/Tornado%20Injuries.jpeg)
+
+***
+
+### [Egg Production (4/11/23)](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/eggs.jpeg)
 
 ![2023/plots/eggs.jpeg](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/eggs.jpeg)
 
