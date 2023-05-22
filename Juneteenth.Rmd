@@ -1,0 +1,46 @@
+---
+title: "Juneteenth"
+output: html_document
+date: '2022-06-21'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+
+```{r}
+firsts <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-06-09/firsts.csv')
+science <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-06-09/science.csv')
+
+
+blackpast <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-06-16/blackpast.csv')
+census <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-06-16/census.csv')
+slave_routes <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-06-16/slave_routes.csv')
+african_names <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-06-16/african_names.csv')
+```
+
+Idea: Create pie chart inspired by W.E.B. Dubois (include same font and design)
+```{r}
+# Data
+firsts %>%
+  group_by(category) %>%
+  summarize(count = n()) %>%
+  
+  firsts <- firsts %>% 
+  arrange(desc(group)) %>%
+  mutate(prop = value / sum(data$value) *100) %>%
+  mutate(ypos = cumsum(prop)- 0.5*prop )
+  
+  ggplot(aes(x = "", y = count, fill = category, color = white)) +
+   geom_bar(stat="identity", width=1, color="white") +
+  coord_polar("y", start=0) +
+  
+  theme_void() + 
+  theme(legend.position="none") +
+  
+  geom_text(aes(y = ypos, label = group), color = "white", size=6) +
+  scale_fill_brewer(palette="Set1")
+```
+
