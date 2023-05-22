@@ -73,6 +73,6 @@ tornado_plot <- inj_avg %>%
 
 tornado_plot
 
-ggsave(plot = tornado_plot, file = "Tornado Injuries.jpeg", height = 5.5, width = 9)
+ggsave(plot = tornado_plot, file = "Tornado Injuries.jpeg", height = 6, width = 9.5)
 ```
 
