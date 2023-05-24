@@ -1,5 +1,0 @@
-"0","drought_by_decade %>%
-  group_by(State, decade) %>%
-  summarize(avg_DSCI = mean(DSCI))
-"
-"2","`summarise()` has grouped output by 'State'. You can override using the `.groups` argument."
