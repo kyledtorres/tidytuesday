@@ -1,0 +1,3 @@
+"0","# separate data into decades"
+"0","drought_by_decade <- drought_fips %>%"
+"0","  mutate(decade = 10 * (year(date) %/% 10))"

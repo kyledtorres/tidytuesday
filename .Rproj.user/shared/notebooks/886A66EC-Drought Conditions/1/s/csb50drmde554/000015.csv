@@ -1,0 +1,3 @@
+"0","# add fonts from Google"
+"0","font_add_google(""Domine"", family = ""Domine"")"
+"0","showtext_auto()"

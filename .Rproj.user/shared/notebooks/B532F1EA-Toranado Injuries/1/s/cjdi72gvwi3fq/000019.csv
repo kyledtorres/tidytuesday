@@ -1,0 +1,6 @@
+"0","# add fonts from Google
+font_add_google(""Regular 400"", family = ""Inter"")
+"
+"2","Error in search_db(name, db_cache = TRUE, handle = handle) : 
+  font not found
+"
