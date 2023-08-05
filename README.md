@@ -1,11 +1,13 @@
 # tidytuesday
 This repository includes my plots as well as code for the weekly #tidytuesday challenge!
 
+
 ***
 
 ### [Tornado Injuries (5/16/23)](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/Tornado%20Injuries.jpeg)
 
 ![2023/plots/Tornado Injuries.jpeg](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/Tornado%20Injuries.jpeg)
+
 
 ***
 
@@ -13,17 +15,20 @@ This repository includes my plots as well as code for the weekly #tidytuesday ch
 
 ![2023/plots/eggs.jpeg](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/eggs.jpeg)
 
+
 ***
 
 ### [Drought Conditions (6/14/22)](https://github.com/kyledtorres/tidytuesday/blob/main/2022/plots/Drought%20Conditions%20in%20the%20US.jpeg)
 
 ![2022/plots/drought_conditions.jpeg](https://github.com/kyledtorres/tidytuesday/blob/main/2022/plots/Drought%20Conditions%20in%20the%20US.jpeg)
 
+
 ***
 
 ### [Pride Donations (6/7/22)](https://github.com/kyledtorres/tidytuesday/blob/main/2022/plots/Pride%20Donations.jpeg)
 
 ![2022/plots/pride donations.jpeg](https://github.com/kyledtorres/tidytuesday/blob/main/2022/plots/Pride%20Donations.jpeg)
+
 
 ***
 
