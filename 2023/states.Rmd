@@ -1,0 +1,59 @@
+---
+title: "Untitled"
+output: html_document
+date: "2023-08-04"
+---
+
+```{r}
+library(tidyverse)
+library(maps)
+```
+
+```{r}
+states <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-08-01/states.csv')
+state_name_etymology <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-08-01/state_name_etymology.csv')
+```
+
+```{r}
+state_prop <- states %>%
+  select(state, population_2020, total_area_mi2)
+
+state_prop <- state_prop %>%
+  mutate(prop = population_2020/total_area_mi2) %>%
+  arrange(desc(prop)) # for every 1 sq mile, there are x people
+```
+
+```{r}
+state_prop$state = tolower(state_prop$state)
+
+map_states <- map_data("state")
+map_df <- left_join(map_states, state_prop, by = join_by(region == state))
+
+us_plot <- ggplot(map_df, aes(x=long,y=lat,group=group)) +
+  geom_polygon(aes(fill=prop)) +
+  geom_path(size=0.1) + 
+  coord_map() +
+  scale_fill_gradient(
+    low = "white",
+    high = "darkorange3") +
+  labs(x = "", y = "", title = "U.S. Population Density by State", subtitle = "Number of inhabitants relative to state size", caption = "Kyle Torres | Data: Wikipedia") +
+  theme(
+    panel.background = element_blank(),  # Remove background  
+    panel.grid = element_blank(),        # Remove grid lines
+    axis.text = element_blank(),         # Remove axis text labels
+    axis.title = element_blank(),        # Remove axis titles
+    axis.ticks = element_blank(),        # Remove axis ticks
+    plot.title = element_text(hjust = 0.6, face = "bold"),    # Center the title
+    plot.subtitle = element_text(hjust = 0.6),
+    plot.caption = element_text(hjust = 1.18),
+    legend.title = element_text(size = 9)
+    ) +
+  labs(fill = "Ppl per sq. mi.") +   # Change the legend name
+  # theme(legend.position = "top") +
+  guides(fill = guide_legend(title.position = "top"))  # Change legend location
+
+us_plot
+
+ggsave(plot = us_plot, file = "US Population Density by State.jpeg", height = 5, width = 8.5)
+```
+
