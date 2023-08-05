@@ -4,7 +4,7 @@ This repository includes my plots as well as code for the weekly #tidytuesday ch
 
 ***
 
-### [US Popululation Density by State (8/1/23)](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/US%20Population%20Density%20by%20State.jpeg)
+### [US Population Density by State (8/1/23)](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/US%20Population%20Density%20by%20State.jpeg)
 
 ![2023/plots/US Population Density by State.jpeg](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/US%20Population%20Density%20by%20State.jpeg)
 
