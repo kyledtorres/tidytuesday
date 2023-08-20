@@ -11,9 +11,9 @@ This repository includes my plots as well as code for the weekly #tidytuesday ch
 
 ***
 
-### [Tornado Injuries (5/16/23)](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/Tornado%20Injuries.jpeg)
+### [Tornado Bubble Map (5/16/23)](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/Tornado%20Bubble%20Map.jpeg)
 
-![2023/plots/Tornado Injuries.jpeg](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/Tornado%20Injuries.jpeg)
+![2023/plots/Tornado Bubble Map.jpeg](https://github.com/kyledtorres/tidytuesday/blob/main/2023/plots/Tornado%20Bubble%20Map.jpeg)
 
 
 ***
