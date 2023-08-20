@@ -1,0 +1,83 @@
+---
+title: "Tornado"
+output: html_document
+date: "2023-05-17"
+---
+
+```{r}
+library(tidyverse)
+library(maps)
+library(ggtext)
+library(showtext)
+library(viridis)
+```
+
+
+```{r}
+tornados <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-16/tornados.csv')
+```
+
+
+```{r}
+# add fonts from Google
+font_add_google("Inter")
+showtext_auto()
+```
+
+
+```{r}
+inj_by_state <- tornados %>%
+  select(st, inj) %>%
+  group_by(st) %>%
+  summarize(count = n()) %>%
+  arrange(desc(count))
+
+inj_by_state %>%
+  ggplot(aes(x=reorder(st, +count), y=count)) +
+  geom_bar(stat = "identity") +
+  coord_flip()
+```
+
+
+```{r}
+inj_avg <- tornados %>%
+  group_by(st) %>%
+  summarize(avg_inj = mean(inj)) %>%
+  ungroup() %>%
+    inner_join(tibble(st = state.abb, region = state.name), by = "st") %>%
+  inner_join(map_data("state") %>% tibble() %>% mutate(region = str_to_title(region)), by = "region")
+
+
+US <- map_data("world") %>% filter(region=="USA")
+
+world.cities %>% filter(country.etc=="UK")
+
+USdata <- tornados %>%
+  select(st, mag, slat, slon)
+```
+
+```{r}
+us_tornado_plot <- USdata %>%
+  arrange(mag) %>% 
+  ggplot() +
+  geom_polygon(data = US, aes(x=long, y = lat, group = group), fill="grey", alpha=0.4) +
+  geom_point(aes(x=slon, y=slat, size=mag, color=mag), alpha=0.8) + 
+  scale_size_continuous(range=c(1,3)) +
+  scale_color_viridis() +
+  xlim(-125,-65) + ylim(25,50) +
+  theme_void() +
+  coord_map() +
+  labs(x = "", y = "", title = "Where are Tornados the biggest in the US?", subtitle = "Bubble map of tornados in the United States by magnitude", caption = "Kyle Torres | Data: NOAA's National Weather Service Storm Prediction Center") +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),    # Center the title
+    plot.subtitle = element_text(hjust = 0.5),
+    plot.caption = element_text(hjust = 0.98),
+    legend.title = element_text(size = 9),
+    legend.position = c(0.97, 0.5)
+    )
+
+us_tornado_plot
+
+ggsave(plot = us_tornado_plot, file = "Tornado Bubble Map.jpeg", height = 6, width = 9.5)
+```
+
